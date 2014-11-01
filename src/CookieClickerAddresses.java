@@ -22,4 +22,5 @@ public class CookieClickerAddresses {
     String productTwoPrice = "productPrice1";
 
 
+
 }

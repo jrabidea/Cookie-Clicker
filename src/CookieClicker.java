@@ -1,4 +1,5 @@
-import org.omg.PortableServer._ServantLocatorStub;
+
+import org.openqa.jetty.jetty.servlet.jmx.WebApplicationContextMBean;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +10,6 @@ import org.openqa.selenium.WebElement;
 public class CookieClicker {
 
     public static void main(String[] args){
-
         CookieClickerAddresses addresses = new CookieClickerAddresses();
 
         // Launch Firefox and go to cookie cutter site
@@ -21,128 +21,133 @@ public class CookieClicker {
         //Cookie elements
         WebElement cookie = firefox.findElement(By.id(addresses.cookieLocation));
         WebElement cookieCounter = firefox.findElement(By.id(addresses.cookieCounterLocation));
+        WebElement cursorUpgrade;
+        WebElement cursorUpgradePrice;
         WebElement grandmaUpgrade;
         WebElement grandmaUpgradePrice;
 
+
+
+
+
+
         // String variables
         String count;
-        String upgradeOnePrice;
-        String countNum;
-        String upgradeTwoPrice;
+        String upgradeOnePrice = "";
+        String upgradeTwoPrice = "";
+        String counter = "";
 
 
         // Integer variables
         int cookieNum;
+        int countNum;
         int upgradeOnePriceNum;
         int cursorUpgradesBought = 0;
         int upgradeTwoPriceNum;
         int grandmaUpgradesBought = 0;
 
+
         // Boolean variables
         Boolean buyCursorUpgrade = true;
-        Boolean buyGrandmaUpgrade = true;
+        Boolean buyGrandmaUpgrade = false;
         Boolean start = true;
 
 
-
-        // Clicks to unlock the cursor upgrade
-        for (int t = 0; t < 19; t++){
+        for(int i = 0; i < 10; i ++){
 
             cookie.click();
-
         }
 
 
-        WebElement cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
-        WebElement cursorUpgradePrice = firefox.findElement(By.id(addresses.productOnePrice));
-
-          while(start){
+        while(start){
 
             cookie.click();
             count = cookieCounter.getText();
-            count.length();
-            upgradeOnePrice = cursorUpgradePrice.getText();
-            upgradeOnePriceNum = Integer.parseInt(upgradeOnePrice);
+            countNum = count.length();
+
+              switch (countNum){
+                  case 25: counter = count.substring(0,0);
+                      break;
+                  case 26: counter = count.substring(0,1);
+                  break;
+                  case 27: counter = count.substring(0,2);
+                      break;
+                  case 28: counter = count.substring(0,3);
+                      break;
+                  case 29: counter = count.substring(0,4);
+                      break;
+                  case 30:  counter = count.substring(0,5);
+                      break;
+                  default:
+                      System.out.println("No cookies available");
+                      break;
+              }
+
+            cookieNum  = Integer.parseInt(counter);
 
 
-                if(count.length() == 26){
+            // Upgrades
 
-                  countNum = count.substring(0, 1);
-                  cookieNum = Integer.parseInt(countNum);
+            if (buyCursorUpgrade){
+                 if(cookieNum > 18){
 
-                }
+                    cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
+                    cursorUpgradePrice = firefox.findElement(By.id(addresses.productOnePrice));
 
-                else if(count.length() == 27){
-                  countNum = count.substring(0, 2);
-                  cookieNum = Integer.parseInt(countNum);
+                    upgradeOnePrice = cursorUpgradePrice.getText();
+                    upgradeOnePriceNum = Integer.parseInt(upgradeOnePrice);
 
-                  if (buyCursorUpgrade){
-                    if (cookieNum >= upgradeOnePriceNum ){
-                      cursorUpgrade.click();
-                      cursorUpgradesBought++;
-                    }
-                    if(cursorUpgradesBought == 5){
+                     if(cookieNum > upgradeOnePriceNum){
 
-                        buyCursorUpgrade = false;
-                    }
-                  }
+                         cursorUpgrade.click();
+                         cursorUpgradesBought++;
 
 
+                     }
 
-                }
+                     if(cursorUpgradesBought == 5){
 
-                else if(count.length() == 28){
-                  countNum = count.substring(0, 3);
+                         buyCursorUpgrade = false;
+                         buyGrandmaUpgrade = true;
 
-                  cookieNum = Integer.parseInt(countNum);
-
-                  grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
-                  grandmaUpgradePrice = firefox.findElement(By.id(addresses.productTwoPrice));
-
-                  upgradeTwoPrice = grandmaUpgradePrice.getText();
-                  upgradeTwoPriceNum = Integer.parseInt(upgradeTwoPrice);
+                     }
 
 
-                // Buy Cursor Upgrade
-                  if(buyCursorUpgrade){
+                 }
 
-                    if (cookieNum >= upgradeOnePriceNum ){
-                      cursorUpgrade.click();
-                      cursorUpgradesBought++;
-                    }
+            }
 
-                  }
+            else if(buyGrandmaUpgrade){
 
-                    if(cursorUpgradesBought == 5){
-                        buyCursorUpgrade = false;
+                if (cookieNum > 100){
 
+                    grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
+                    grandmaUpgradePrice = firefox.findElement(By.id(addresses.productTwoPrice));
 
-                    }
+                    upgradeTwoPrice = grandmaUpgradePrice.getText();
+                    upgradeTwoPriceNum = Integer.parseInt(upgradeTwoPrice);
 
+                     if (cookieNum > upgradeTwoPriceNum){
 
-                //Buy Grandma Update
-                  if (buyGrandmaUpgrade){
-
-                     if(cookieNum >= upgradeTwoPriceNum ){
-                            grandmaUpgrade.click();
-                            grandmaUpgradesBought++;
+                        grandmaUpgrade.click();
+                        grandmaUpgradesBought++;
 
                         if(grandmaUpgradesBought == 5){
-                                buyGrandmaUpgrade = false;
+
+                            buyGrandmaUpgrade = false;
                         }
 
                      }
 
-                  }
 
                 }
 
 
-
-
-
-
             }
+
+
+
+        }
 
     }
 }
