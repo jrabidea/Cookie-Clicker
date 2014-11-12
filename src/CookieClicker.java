@@ -21,38 +21,20 @@ public class CookieClicker {
         //Cookie elements
         WebElement cookie = firefox.findElement(By.id(addresses.cookieLocation));
         WebElement cookieCounter = firefox.findElement(By.id(addresses.cookieCounterLocation));
-        WebElement cursorUpgrade;
-        WebElement cursorUpgradePrice;
-        WebElement grandmaUpgrade;
-        WebElement grandmaUpgradePrice;
-        WebElement farmUpgrade;
-        WebElement farmUpgradePrice;
-        // String variables
+        WebElement[] storeUpgrades = new WebElement[216];
+          // String variables
         String count;
-        String countUpgradeThree = "";
-        String upgradeOnePrice = "";
-        String upgradeTwoPrice = "";
         String counter = "";
-        String upgradeThreePrice ="";
-
-
         // Integer variables
         int cookieNum;
-        int countNum;
-        int upgradeOnePriceNum;
+        int checkUpgrades = 0;
         int cursorUpgradesBought = 0;
-        int upgradeTwoPriceNum;
         int grandmaUpgradesBought = 0;
-        int upgradeThreePriceNum;
         int farmUpgradesBought = 0;
-
-        // Boolean variables
-        Boolean buyCursorUpgrade = true;
-        Boolean buyGrandmaUpgrade = false;
+       // Boolean variables
         Boolean start = true;
-        Boolean buyFarmUpgrade = false;
 
-        for(int i = 0; i < 10; i ++){
+        for(int i = 0; i < 20; i ++){
 
             cookie.click();
         }
@@ -64,72 +46,26 @@ public class CookieClicker {
             counter = cookieSplit[0].replace(",","");
             cookieNum = Integer.parseInt(counter);
             // Upgrades
-            if (buyCursorUpgrade){
-                 if(cookieNum > 18){
 
-                    cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
-                    cursorUpgradePrice = firefox.findElement(By.id(addresses.productOnePrice));
+           WebElement cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
+           WebElement grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
+           WebElement farmUpgrade = firefox.findElement(By.id(addresses.productThree));
 
-                    upgradeOnePrice = cursorUpgradePrice.getText();
-                    upgradeOnePriceNum = Integer.parseInt(upgradeOnePrice);
 
-                     if(cookieNum > upgradeOnePriceNum){
 
-                         cursorUpgrade.click();
-                         cursorUpgradesBought++;
-                     }
-
-                     if(cursorUpgradesBought == 5){
-                         buyCursorUpgrade = false;
-                         buyGrandmaUpgrade = true;
-                     }
-                 }
+            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
+                cursorUpgrade.click();
+                cursorUpgradesBought++;
             }
 
-            else if(buyGrandmaUpgrade){
-
-                if (cookieNum > 100){
-
-                    grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
-                    grandmaUpgradePrice = firefox.findElement(By.id(addresses.productTwoPrice));
-
-                    upgradeTwoPrice = grandmaUpgradePrice.getText();
-                    upgradeTwoPriceNum = Integer.parseInt(upgradeTwoPrice);
-
-                     if (cookieNum > upgradeTwoPriceNum){
-
-                        grandmaUpgrade.click();
-                        grandmaUpgradesBought++;
-
-                        if(grandmaUpgradesBought == 5){
-
-                            buyGrandmaUpgrade = false;
-                            buyFarmUpgrade = true;
-                        }
-                     }
-                }
+            if(grandmaUpgrade.getAttribute("class").equals("product unlocked enabled") && grandmaUpgradesBought < 10){
+                grandmaUpgrade.click();
+                grandmaUpgradesBought++;
             }
 
-            else if (buyFarmUpgrade){
-
-                if(cookieNum > 500){
-
-                    farmUpgrade = firefox.findElement(By.id(addresses.productThree));
-                    farmUpgradePrice = firefox.findElement(By.id(addresses.productThreePrice));
-
-                    upgradeThreePrice = farmUpgradePrice.getText();
-                    countUpgradeThree = upgradeThreePrice.replace(",", "");
-                    upgradeThreePriceNum = Integer.parseInt(countUpgradeThree);
-
-                    if(cookieNum > upgradeThreePriceNum){
-
-                        farmUpgrade.click();
-                        farmUpgradesBought++;
-                            if(farmUpgradesBought == 5){
-                                buyFarmUpgrade = false;
-                            }
-                    }
-                }
+            if(farmUpgrade.getAttribute("class").equals("product unlocked enabled") && farmUpgradesBought < 10){
+                farmUpgrade.click();
+                farmUpgradesBought++;
             }
         }
     }
