@@ -20,6 +20,8 @@ public class CookieClickerAddresses {
     String productOnePrice = "productPrice0";
     String productTwo = "product1";
     String productTwoPrice = "productPrice1";
+    String productThree = "product2";
+    String productThreePrice = "productPrice2";
 
 
 

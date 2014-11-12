@@ -25,17 +25,15 @@ public class CookieClicker {
         WebElement cursorUpgradePrice;
         WebElement grandmaUpgrade;
         WebElement grandmaUpgradePrice;
-
-
-
-
-
-
+        WebElement farmUpgrade;
+        WebElement farmUpgradePrice;
         // String variables
         String count;
+        String countUpgradeThree = "";
         String upgradeOnePrice = "";
         String upgradeTwoPrice = "";
         String counter = "";
+        String upgradeThreePrice ="";
 
 
         // Integer variables
@@ -45,49 +43,27 @@ public class CookieClicker {
         int cursorUpgradesBought = 0;
         int upgradeTwoPriceNum;
         int grandmaUpgradesBought = 0;
-
+        int upgradeThreePriceNum;
+        int farmUpgradesBought = 0;
 
         // Boolean variables
         Boolean buyCursorUpgrade = true;
         Boolean buyGrandmaUpgrade = false;
         Boolean start = true;
-
+        Boolean buyFarmUpgrade = false;
 
         for(int i = 0; i < 10; i ++){
 
             cookie.click();
         }
-
-
         while(start){
 
             cookie.click();
             count = cookieCounter.getText();
-            countNum = count.length();
-
-              switch (countNum){
-                  case 25: counter = count.substring(0,0);
-                      break;
-                  case 26: counter = count.substring(0,1);
-                  break;
-                  case 27: counter = count.substring(0,2);
-                      break;
-                  case 28: counter = count.substring(0,3);
-                      break;
-                  case 29: counter = count.substring(0,4);
-                      break;
-                  case 30:  counter = count.substring(0,5);
-                      break;
-                  default:
-                      System.out.println("No cookies available");
-                      break;
-              }
-
-            cookieNum  = Integer.parseInt(counter);
-
-
+            String[] cookieSplit = count.split(" ");
+            counter = cookieSplit[0].replace(",","");
+            cookieNum = Integer.parseInt(counter);
             // Upgrades
-
             if (buyCursorUpgrade){
                  if(cookieNum > 18){
 
@@ -101,20 +77,13 @@ public class CookieClicker {
 
                          cursorUpgrade.click();
                          cursorUpgradesBought++;
-
-
                      }
 
                      if(cursorUpgradesBought == 5){
-
                          buyCursorUpgrade = false;
                          buyGrandmaUpgrade = true;
-
                      }
-
-
                  }
-
             }
 
             else if(buyGrandmaUpgrade){
@@ -135,19 +104,33 @@ public class CookieClicker {
                         if(grandmaUpgradesBought == 5){
 
                             buyGrandmaUpgrade = false;
+                            buyFarmUpgrade = true;
                         }
-
                      }
-
-
                 }
-
-
             }
 
+            else if (buyFarmUpgrade){
 
+                if(cookieNum > 500){
 
+                    farmUpgrade = firefox.findElement(By.id(addresses.productThree));
+                    farmUpgradePrice = firefox.findElement(By.id(addresses.productThreePrice));
+
+                    upgradeThreePrice = farmUpgradePrice.getText();
+                    countUpgradeThree = upgradeThreePrice.replace(",", "");
+                    upgradeThreePriceNum = Integer.parseInt(countUpgradeThree);
+
+                    if(cookieNum > upgradeThreePriceNum){
+
+                        farmUpgrade.click();
+                        farmUpgradesBought++;
+                            if(farmUpgradesBought == 5){
+                                buyFarmUpgrade = false;
+                            }
+                    }
+                }
+            }
         }
-
     }
 }
