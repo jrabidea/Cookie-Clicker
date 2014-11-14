@@ -17,10 +17,17 @@ public class CookieClickerAddresses {
 
     //Products
     String productOne = "product0";
-    String productOnePrice = "productPrice0";
     String productTwo = "product1";
-    String productTwoPrice = "productPrice1";
+    String productThree = "product2";
+<<<<<<< HEAD
+    String productFour = "product3";
+    String productFive = "product4";
+    String productSix = "product5";
+    String productSeven = "product6";
+    String productEight = "product7";
+    String productNine = "product8";
 
-
+=======
+>>>>>>> FETCH_HEAD
 
 }
