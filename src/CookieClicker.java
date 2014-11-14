@@ -34,10 +34,6 @@ public class CookieClicker {
 
 
         // String variables
-        WebElement[] storeUpgrades = new WebElement[216];
-          // String variables
-        WebElement[] storeUpgrades = new WebElement[216];
-          // String variables
         String count;
         String counter = "";
         // Integer variables
@@ -50,14 +46,7 @@ public class CookieClicker {
         int shipmentUpgradesBought = 0;
         int alchemyLabUpgradesBought = 0;
         int portalUpgradesBought = 0;
-        int checkUpgrades = 0;
-        int cursorUpgradesBought = 0;
-        int grandmaUpgradesBought = 0;
-        int farmUpgradesBought = 0;
-        int checkUpgrades = 0;
-        int cursorUpgradesBought = 0;
-        int grandmaUpgradesBought = 0;
-        int farmUpgradesBought = 0;
+
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
@@ -74,27 +63,12 @@ public class CookieClicker {
             counter = cookieSplit[0].replace(",","");
             cookieNum = Integer.parseInt(counter);
             // Upgrades
-
             System.out.println(cookieNum);
+
+
 
             if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
                 System.out.println("Buying cursor...");
-
-           WebElement cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
-           WebElement grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
-           WebElement farmUpgrade = firefox.findElement(By.id(addresses.productThree));
-
-
-
-            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
-
-           WebElement cursorUpgrade = firefox.findElement(By.id(addresses.productOne));
-           WebElement grandmaUpgrade = firefox.findElement(By.id(addresses.productTwo));
-           WebElement farmUpgrade = firefox.findElement(By.id(addresses.productThree));
-
-
-
-            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
                 cursorUpgrade.click();
                 cursorUpgradesBought++;
             }
@@ -151,6 +125,8 @@ public class CookieClicker {
                 storeUpgrade.click();
                 System.out.println("store upgrade bought...");
             }
+
+
         }
     }
 }

@@ -19,7 +19,6 @@ public class CookieClickerAddresses {
     String productOne = "product0";
     String productTwo = "product1";
     String productThree = "product2";
-
     String productFour = "product3";
     String productFive = "product4";
     String productSix = "product5";
