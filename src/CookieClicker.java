@@ -3,6 +3,10 @@ import org.openqa.jetty.jetty.servlet.jmx.WebApplicationContextMBean;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Created by jrAb on 10/24/14.
@@ -31,12 +35,13 @@ public class CookieClicker {
         WebElement alchemyLabUpgrade =firefox.findElement(By.id(addresses.productSeven));
         WebElement portalUpgrade = firefox.findElement(By.id(addresses.productEight));
         WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productTen));
-
-
+        WebElement menu = firefox.findElement(By.xpath(addresses.menuButton));
+        
 
         // String variables
         String count;
         String counter = "";
+        String code = "";
         // Integer variables
         int cookieNum;
         int cursorUpgradesBought = 0;
@@ -48,11 +53,14 @@ public class CookieClicker {
         int alchemyLabUpgradesBought = 0;
         int portalUpgradesBought = 0;
         int timeMachineUpgradesBought = 0;
+        int countSave = 1;
 
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
 
+        //File varibale
+        File saveGame = new File("CookieClicerSave.txt");
     
         while(start){
 
@@ -131,6 +139,29 @@ public class CookieClicker {
                 System.out.println("store upgrade bought...");
             }
 
+            if(countSave == 100){
+                menu.click();
+                WebElement saveExport = firefox.findElement(By.xpath(addresses.exportButton));
+                WebElement importSave = firefox.findElement(By.xpath(addresses.importButton));
+                System.out.println("Saving game.....");
+                saveExport.click();
+                firefox.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+                WebElement saveCode = firefox.findElement(By.id(addresses.exportTextArea));
+                WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+                code = saveCode.getText();
+                System.out.println(code);
+                try{
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                allDone.click();
+                firefox.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+                countSave = 0;
+            }
+
+
+
+            countSave++;
 
         }
     }

@@ -27,5 +27,11 @@ public class CookieClickerAddresses {
     String productNine = "product8";
     String productTen = "product9";
 
+    //Menu;
+    String menuButton = "//*[@id='prefsButton']";
+    String exportButton = "/html/body/div/div[2]/div[14]/div[4]/div[3]/div[3]/a[1]";
+    String importButton = "/html/body/div/div[2]/div[14]/div[4]/div[3]/div[3]/a[2]";
+    String exportTextArea = "textareaPrompt";
+    String allDoneButton = "promptOption0";
 
 }
