@@ -19,7 +19,7 @@ public class CookieClickerAddresses {
     String productOne = "product0";
     String productTwo = "product1";
     String productThree = "product2";
-<<<<<<< HEAD
+
     String productFour = "product3";
     String productFive = "product4";
     String productSix = "product5";
@@ -27,7 +27,5 @@ public class CookieClickerAddresses {
     String productEight = "product7";
     String productNine = "product8";
 
-=======
->>>>>>> FETCH_HEAD
 
 }
