@@ -3,13 +3,23 @@ import org.openqa.jetty.jetty.servlet.jmx.WebApplicationContextMBean;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+
+
 
 /**
  * Created by jrAb on 10/24/14.
  */
 public class CookieClicker {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws FileNotFoundException{
         CookieClickerAddresses addresses = new CookieClickerAddresses();
 
         // Launch Firefox and go to cookie cutter site
@@ -31,14 +41,16 @@ public class CookieClicker {
         WebElement alchemyLabUpgrade =firefox.findElement(By.id(addresses.productSeven));
         WebElement portalUpgrade = firefox.findElement(By.id(addresses.productEight));
         WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productTen));
-
-
+        WebElement menu = firefox.findElement(By.xpath(addresses.menuButton));
+        
 
         // String variables
         String count;
         String counter = "";
+        String code = "";
+        String codeImport = "";
+        String cookieText = "";
         // Integer variables
-        int cookieNum;
         int cursorUpgradesBought = 0;
         int grandmaUpgradesBought = 0;
         int farmUpgradesBought = 0;
@@ -48,24 +60,53 @@ public class CookieClicker {
         int alchemyLabUpgradesBought = 0;
         int portalUpgradesBought = 0;
         int timeMachineUpgradesBought = 0;
+        int countSave = 1;
 
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
+        
 
-    
+        //File varibale
+        File saveGame = new File("CookieClickerSave.txt");
+
+        
+        //Import File
+        BufferedReader reader = new BufferedReader(new FileReader(saveGame));
+        String line = null;
+       
+        try{
+        while((line = reader.readLine()) != null){
+            codeImport = line;
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException a){
+            a.printStackTrace();
+        }    
+        System.out.println("Importing save.....");  
+
+        menu.click();
+
+        WebElement importSaveButton = firefox.findElement(By.xpath(addresses.importButton));
+        importSaveButton.click();
+        WebElement importText = firefox.findElement(By.id(addresses.textArea));
+        WebElement importLoadButton = firefox.findElement(By.xpath(addresses.loadButton));
+        importText.sendKeys(codeImport);
+        importLoadButton.click();
+        menu.click();
+        
+
+        //Start Cookie Click
         while(start){
 
             cookie.click();
-            count = cookieCounter.getText();
-            String[] cookieSplit = count.split(" ");
-            counter = cookieSplit[0].replace(",","");
-            cookieNum = Integer.parseInt(counter);
-            // Upgrades
-            System.out.println(cookieNum);
+            cookieText = cookieCounter.getText();
+        
+            System.out.println(cookieText);
 
 
-
+             // Upgrades
             if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
                 System.out.println("Buying cursor...");
                 cursorUpgrade.click();
@@ -131,6 +172,26 @@ public class CookieClicker {
                 System.out.println("store upgrade bought...");
             }
 
+            if(countSave == 1000){
+                menu.click();
+                WebElement saveExport = firefox.findElement(By.xpath(addresses.exportButton));
+                WebElement importSave = firefox.findElement(By.xpath(addresses.importButton));
+                System.out.println("Saving game.....");
+                saveExport.click();
+                WebElement saveCode = firefox.findElement(By.id(addresses.textArea));
+                WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+                code = saveCode.getText();
+                try{
+                    FileUtils.write(saveGame, code);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                allDone.click();
+                countSave = 0;
+                menu.click();
+            }
+
+            countSave++;
 
         }
     }
