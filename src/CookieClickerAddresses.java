@@ -25,6 +25,7 @@ public class CookieClickerAddresses {
     String productSeven = "product6";
     String productEight = "product7";
     String productNine = "product8";
+    String productTen = "product9";
 
 
 }

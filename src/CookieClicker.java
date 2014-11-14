@@ -30,6 +30,7 @@ public class CookieClicker {
         WebElement shipmentUpgrade = firefox.findElement(By.id(addresses.productSix));
         WebElement alchemyLabUpgrade =firefox.findElement(By.id(addresses.productSeven));
         WebElement portalUpgrade = firefox.findElement(By.id(addresses.productEight));
+        WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productTen));
 
 
 
@@ -46,15 +47,13 @@ public class CookieClicker {
         int shipmentUpgradesBought = 0;
         int alchemyLabUpgradesBought = 0;
         int portalUpgradesBought = 0;
+        int timeMachineUpgradesBought = 0;
 
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
 
-        for(int i = 0; i < 20; i ++){
-
-            cookie.click();
-        }
+    
         while(start){
 
             cookie.click();
@@ -116,6 +115,12 @@ public class CookieClicker {
                 System.out.println("Buying portal...");
                 portalUpgrade.click();
                 portalUpgradesBought++;
+            }
+
+            if(timeMachineUpgrade.getAttribute("class").equals("product unlocked enabled") && timeMachineUpgradesBought < 10){
+                System.out.println("Buying time machine...");
+                timeMachineUpgrade.click();
+                timeMachineUpgradesBought++;
             }
 
             if(isPresent = firefox.findElements(By.xpath
