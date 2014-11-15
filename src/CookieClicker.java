@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-
+import org.openqa.selenium.NoSuchElementException;
 
 
 /**
@@ -40,16 +40,28 @@ public class CookieClicker {
         WebElement shipmentUpgrade = firefox.findElement(By.id(addresses.productSix));
         WebElement alchemyLabUpgrade =firefox.findElement(By.id(addresses.productSeven));
         WebElement portalUpgrade = firefox.findElement(By.id(addresses.productEight));
-        WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productTen));
+        WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productNine));
         WebElement menu = firefox.findElement(By.xpath(addresses.menuButton));
-        
-
+        WebElement cursorUpgradesOwned = firefox.findElement(By.id(addresses.productOneOwned));
+        WebElement grandmaUpgradesOwned = firefox.findElement(By.id(addresses.productTwoOwned));
+        WebElement farmUpgradesOwned = firefox.findElement(By.id(addresses.productThreeOwned));
+        WebElement factoryUpgradesOwned = firefox.findElement(By.id(addresses.productFourOwned));
+        WebElement mineUpgradesOwned = firefox.findElement(By.id(addresses.productFiveOwned));
+        WebElement shipmentUpgradesOwned = firefox.findElement(By.id(addresses.productSixOwned));
+        WebElement alchemyUpgradesOwned = firefox.findElement(By.id(addresses.productSevenOwned));
+        WebElement portalUpgradesOwned = firefox.findElement(By.id(addresses.productEightOwned));
+        WebElement timeMachineUpgradesOwned = firefox.findElement(By.id(addresses.productNineOwned));
+      
         // String variables
         String count;
         String counter = "";
         String code = "";
         String codeImport = "";
         String cookieText = "";
+        String loadGetOwnedTextCheck = "";
+      
+
+
         // Integer variables
         int cursorUpgradesBought = 0;
         int grandmaUpgradesBought = 0;
@@ -61,6 +73,7 @@ public class CookieClicker {
         int portalUpgradesBought = 0;
         int timeMachineUpgradesBought = 0;
         int countSave = 1;
+        
 
        // Boolean variables
         Boolean start = true;
@@ -71,7 +84,7 @@ public class CookieClicker {
         File saveGame = new File("CookieClickerSave.txt");
 
         
-        //Import File
+        //Import File and load save
         BufferedReader reader = new BufferedReader(new FileReader(saveGame));
         String line = null;
        
@@ -95,7 +108,25 @@ public class CookieClicker {
         importText.sendKeys(codeImport);
         importLoadButton.click();
         menu.click();
-        
+        // Checks upgrades from save and set the amount for each upgrade
+        WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
+                                        mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
+                                        timeMachineUpgradesOwned};
+
+        int[] upgradesBought =  {cursorUpgradesBought, grandmaUpgradesBought, farmUpgradesBought, factoryUpgradesBought,
+                                    mineUpgradesBought, shipmentUpgradesBought, alchemyLabUpgradesBought, 
+                                    portalUpgradesBought, timeMachineUpgradesBought};
+
+        for(int i = 0; i < upgradesOwned.length;i++){
+            loadGetOwnedTextCheck = upgradesOwned[i].getText();
+            if(loadGetOwnedTextCheck.equals("")){
+                System.out.println("Upgrade not purchased from previous save");
+                upgradesBought[i] = 0;
+            }
+            else{
+                upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
+        }
+    }
 
         //Start Cookie Click
         while(start){
@@ -107,61 +138,60 @@ public class CookieClicker {
 
 
              // Upgrades
-            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && cursorUpgradesBought < 10){
+            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[0] < 10){
                 System.out.println("Buying cursor...");
                 cursorUpgrade.click();
-                cursorUpgradesBought++;
+                upgradesBought[0]++;
             }
 
-            if(grandmaUpgrade.getAttribute("class").equals("product unlocked enabled") && grandmaUpgradesBought < 10){
+            if(grandmaUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[1] < 10){
                 System.out.println("Buying grandma...");
                 grandmaUpgrade.click();
-                grandmaUpgradesBought++;
+                upgradesBought[1]++;
             }
 
-            if(farmUpgrade.getAttribute("class").equals("product unlocked enabled") && farmUpgradesBought < 10){
+            if(farmUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[2] < 10){
                 System.out.println("Buying farm...");
                 farmUpgrade.click();
-                farmUpgradesBought++;
+                upgradesBought[2]++;
             }
 
-            if(factoryUpgrade.getAttribute("class").equals("product unlocked enabled") && factoryUpgradesBought <10){
+            if(factoryUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[3] < 10){
                 System.out.println("Buying factory...");
                 factoryUpgrade.click();
-                factoryUpgradesBought++;
+                upgradesBought[3]++;
             }
 
-            if(mineUpgrade.getAttribute("class").equals("product unlocked enabled") && mineUpgradesBought < 10 ){
+            if(mineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[4] < 10 ){
                 System.out.println("Buying mine..");
                 mineUpgrade.click();
-                mineUpgradesBought++;
+                upgradesBought[4]++;
 
             }
 
-            if(shipmentUpgrade.getAttribute("class").equals("product unlocked enabled")&& shipmentUpgradesBought < 10){
+            if(shipmentUpgrade.getAttribute("class").equals("product unlocked enabled")&& upgradesBought[5] < 10){
                 System.out.println("Buying shipment...");
                 shipmentUpgrade.click();
-                shipmentUpgradesBought++;
+                upgradesBought[5]++;
 
             }
 
-            if(alchemyLabUpgrade.getAttribute("class").equals("product unlocked enabled")
-                    && alchemyLabUpgradesBought < 10){
+            if(alchemyLabUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[6] < 10){
                 System.out.println("Buying alchemy lab...");
                 alchemyLabUpgrade.click();
-                alchemyLabUpgradesBought++;
+                upgradesBought[6]++;
             }
 
-            if(portalUpgrade.getAttribute("class").equals("product unlocked enabled") && portalUpgradesBought < 10){
+            if(portalUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[7] < 10){
                 System.out.println("Buying portal...");
                 portalUpgrade.click();
-                portalUpgradesBought++;
+                upgradesBought[7]++;
             }
 
-            if(timeMachineUpgrade.getAttribute("class").equals("product unlocked enabled") && timeMachineUpgradesBought < 10){
+            if(timeMachineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[8] < 10){
                 System.out.println("Buying time machine...");
                 timeMachineUpgrade.click();
-                timeMachineUpgradesBought++;
+                upgradesBought[8]++;
             }
 
             if(isPresent = firefox.findElements(By.xpath
@@ -172,7 +202,8 @@ public class CookieClicker {
                 System.out.println("store upgrade bought...");
             }
 
-            if(countSave == 1000){
+            // Save Game
+            if(countSave == 500){
                 menu.click();
                 WebElement saveExport = firefox.findElement(By.xpath(addresses.exportButton));
                 WebElement importSave = firefox.findElement(By.xpath(addresses.importButton));
@@ -191,6 +222,7 @@ public class CookieClicker {
                 menu.click();
             }
 
+           
             countSave++;
 
         }
