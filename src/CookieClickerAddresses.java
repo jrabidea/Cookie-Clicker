@@ -48,5 +48,8 @@ public class CookieClickerAddresses {
 
     //Achievements
     String closeNotification = "framed close sidenote";
+    //Stats
+    String achievementsUnlocked = "//div[@id='menu']/div[5]/div[2]/b";
+    String statsButton = "statsButton";
 
 }

@@ -1,8 +1,7 @@
 
-import org.openqa.jetty.jetty.servlet.jmx.WebApplicationContextMBean;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +50,7 @@ public class CookieClicker {
         WebElement alchemyUpgradesOwned = firefox.findElement(By.id(addresses.productSevenOwned));
         WebElement portalUpgradesOwned = firefox.findElement(By.id(addresses.productEightOwned));
         WebElement timeMachineUpgradesOwned = firefox.findElement(By.id(addresses.productNineOwned));
+        WebElement stats = firefox.findElement(By.id(addresses.statsButton));
       
         // String variables
         String count;
@@ -73,6 +73,7 @@ public class CookieClicker {
         int portalUpgradesBought = 0;
         int timeMachineUpgradesBought = 0;
         int countSave = 1;
+        int checkAchievements = 1;
         
 
        // Boolean variables
@@ -221,8 +222,18 @@ public class CookieClicker {
                 countSave = 0;
                 menu.click();
             }
+            
+            // Check achievements
+            if(checkAchievements == 1000){
+                System.out.println("Checking achievements.....");¡
+                stats.click();
+                WebElement achievementCount = firefox.findElement(By.xpath(addresses.achievementsUnlocked));
+                System.out.println(achievementCount.getText());
+                checkAchievements = 1;
+                stats.click();
 
-           
+            }
+           checkAchievements++;
             countSave++;
 
         }
