@@ -81,7 +81,7 @@ public class CookieClicker {
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
-        Boolean changeNameOfBakery = null;
+        Boolean changeNameOfBakery = true;
         
 
         //File varibale
@@ -140,7 +140,7 @@ public class CookieClicker {
     }
     stats.click();
 
-    if(changeNameOfBakery = true){
+    if(changeNameOfBakery){
             System.out.println("Re-naming Bakery for achievement");
             nameOfBakery.click();
             WebElement randomButton = firefox.findElement(By.id(addresses.buttonRandom));
