@@ -51,6 +51,8 @@ public class CookieClicker {
         WebElement portalUpgradesOwned = firefox.findElement(By.id(addresses.productEightOwned));
         WebElement timeMachineUpgradesOwned = firefox.findElement(By.id(addresses.productNineOwned));
         WebElement stats = firefox.findElement(By.id(addresses.statsButton));
+        WebElement nameOfBakery = firefox.findElement(By.id(addresses.bakeryName));
+
       
         // String variables
         String count;
@@ -79,6 +81,7 @@ public class CookieClicker {
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
+        Boolean changeNameOfBakery = null;
         
 
         //File varibale
@@ -127,6 +130,23 @@ public class CookieClicker {
             else{
                 upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
         }
+    }   
+    //Checking previously save achievements
+    System.out.println("Checking previously unlocked achievements....");
+    stats.click();
+    WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
+    if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
+          changeNameOfBakery = false;
+    }
+    stats.click();
+
+    if(changeNameOfBakery = true){
+            System.out.println("Re-naming Bakery for achievement");
+            nameOfBakery.click();
+            WebElement randomButton = firefox.findElement(By.id(addresses.buttonRandom));
+            WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+            randomButton.click();
+            allDone.click();
     }
 
         //Start Cookie Click
@@ -225,7 +245,7 @@ public class CookieClicker {
             
             // Check achievements
             if(checkAchievements == 1000){
-                System.out.println("Checking achievements.....");¡
+                System.out.println("Checking achievements.....");
                 stats.click();
                 WebElement achievementCount = firefox.findElement(By.xpath(addresses.achievementsUnlocked));
                 System.out.println(achievementCount.getText());
@@ -233,6 +253,9 @@ public class CookieClicker {
                 stats.click();
 
             }
+
+            //Achievements
+
            checkAchievements++;
             countSave++;
 
