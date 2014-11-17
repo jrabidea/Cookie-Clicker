@@ -1,8 +1,7 @@
 
-import org.openqa.jetty.jetty.servlet.jmx.WebApplicationContextMBean;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +50,9 @@ public class CookieClicker {
         WebElement alchemyUpgradesOwned = firefox.findElement(By.id(addresses.productSevenOwned));
         WebElement portalUpgradesOwned = firefox.findElement(By.id(addresses.productEightOwned));
         WebElement timeMachineUpgradesOwned = firefox.findElement(By.id(addresses.productNineOwned));
+        WebElement stats = firefox.findElement(By.id(addresses.statsButton));
+        WebElement nameOfBakery = firefox.findElement(By.id(addresses.bakeryName));
+
       
         // String variables
         String count;
@@ -59,6 +61,9 @@ public class CookieClicker {
         String codeImport = "";
         String cookieText = "";
         String loadGetOwnedTextCheck = "";
+        String achievementSeparated = "";
+        String achievementSeparated1 = "";
+        String achievementSeparated2 = "";
       
 
 
@@ -73,11 +78,15 @@ public class CookieClicker {
         int portalUpgradesBought = 0;
         int timeMachineUpgradesBought = 0;
         int countSave = 1;
+        int checkAchievements = 1;
+        int round = 10;
+        //int achievementCount = 0;
         
 
        // Boolean variables
         Boolean start = true;
         Boolean isPresent = true;
+        Boolean changeNameOfBakery = true;
         
 
         //File varibale
@@ -126,6 +135,23 @@ public class CookieClicker {
             else{
                 upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
         }
+    }   
+    //Checking previously save achievements
+    System.out.println("Checking previously unlocked achievements....");
+    stats.click();
+    WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
+    if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
+          changeNameOfBakery = false;
+    }
+    stats.click();
+
+    if(changeNameOfBakery){
+            System.out.println("Re-naming Bakery for achievement");
+            nameOfBakery.click();
+            WebElement randomButton = firefox.findElement(By.id(addresses.buttonRandom));
+            WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+            randomButton.click();
+            allDone.click();
     }
 
         //Start Cookie Click
@@ -138,61 +164,67 @@ public class CookieClicker {
 
 
              // Upgrades
-            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[0] < 10){
+            if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[0] < round){
                 System.out.println("Buying cursor...");
                 cursorUpgrade.click();
                 upgradesBought[0]++;
             }
 
-            if(grandmaUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[1] < 10){
+           else if(grandmaUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[1] < round){
                 System.out.println("Buying grandma...");
                 grandmaUpgrade.click();
                 upgradesBought[1]++;
             }
 
-            if(farmUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[2] < 10){
+            else if(farmUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[2] < round){
                 System.out.println("Buying farm...");
                 farmUpgrade.click();
                 upgradesBought[2]++;
             }
 
-            if(factoryUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[3] < 10){
+            else if(factoryUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[3] < round){
                 System.out.println("Buying factory...");
                 factoryUpgrade.click();
                 upgradesBought[3]++;
             }
 
-            if(mineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[4] < 10 ){
+            else if(mineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[4] < round){
                 System.out.println("Buying mine..");
                 mineUpgrade.click();
                 upgradesBought[4]++;
 
             }
 
-            if(shipmentUpgrade.getAttribute("class").equals("product unlocked enabled")&& upgradesBought[5] < 10){
+            else if(shipmentUpgrade.getAttribute("class").equals("product unlocked enabled")&& upgradesBought[5] < round){
                 System.out.println("Buying shipment...");
                 shipmentUpgrade.click();
                 upgradesBought[5]++;
 
             }
 
-            if(alchemyLabUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[6] < 10){
+            else if(alchemyLabUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[6] < round){
                 System.out.println("Buying alchemy lab...");
                 alchemyLabUpgrade.click();
                 upgradesBought[6]++;
             }
 
-            if(portalUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[7] < 10){
+            else if(portalUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[7] < round){
                 System.out.println("Buying portal...");
                 portalUpgrade.click();
                 upgradesBought[7]++;
             }
+            
+            if (upgradesBought[7] == 10){
+                round = 20;
+            }
 
-            if(timeMachineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[8] < 10){
+            else if(timeMachineUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[8] < 10){
                 System.out.println("Buying time machine...");
                 timeMachineUpgrade.click();
                 upgradesBought[8]++;
             }
+
+
 
             if(isPresent = firefox.findElements(By.xpath
                     ("//div[@id='upgrades']/div[contains(@class, 'enabled')]")).size() > 0) {
@@ -221,8 +253,27 @@ public class CookieClicker {
                 countSave = 0;
                 menu.click();
             }
+            
+            // Check achievements
+            if(checkAchievements == 200){
+                System.out.println("Checking achievements.....");
+                stats.click();
+                WebElement achievementCount = firefox.findElement(By.xpath(addresses.achievementsUnlocked));
+                System.out.println(achievementCount.getText());
+                WebElement close = firefox.findElement(By.xpath(addresses.achievementClose));
+                if(close.getAttribute("class").equals("close")){
+                    close.click();
+                }
 
-           
+
+                checkAchievements = 1;
+                stats.click();
+
+            }
+
+            //Achievements
+
+           checkAchievements++;
             countSave++;
 
         }
