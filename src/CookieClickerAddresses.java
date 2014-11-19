@@ -13,7 +13,9 @@ public class CookieClickerAddresses {
 
     String cookieLocation = "bigCookie";
     String cookieCounterLocation = "cookies";
-
+    String bakeryName = "bakeryName";
+    String buttonRandom = "promptOption1";
+   
 
     //Products
     String productOne = "product0";
@@ -26,6 +28,7 @@ public class CookieClickerAddresses {
     String productEight = "product7";
     String productNine = "product8";
     String productTen = "product9";
+    String productEleven = "product10";
     String productOneOwned = "productOwned0";
     String productTwoOwned = "productOwned1";
     String productThreeOwned = "productOwned2";
@@ -36,6 +39,7 @@ public class CookieClickerAddresses {
     String productEightOwned = "productOwned7";
     String productNineOwned = "productOwned8";
     String productTenOwned = "productOwned9";
+    String productElevenOwned = "productOwned10";
 
 
     //Menu;
@@ -48,5 +52,12 @@ public class CookieClickerAddresses {
 
     //Achievements
     String closeNotification = "framed close sidenote";
+    String changeBakeryNameAchievement = "//div[@id='menu']/div[5]/div[4]/div[127]";
+    String achievementClose = "//div[contains(@class, 'note')]/div[contains(@class, close')]";
+    
+
+    //Stats
+    String achievementsUnlocked = "//div[@id='menu']/div[5]/div[2]/b";
+    String statsButton = "statsButton";
 
 }
