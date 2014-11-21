@@ -38,7 +38,7 @@ public class CookieClicker {
         if(startNewGame.equals("yes")){
            newSave = true;
             System.out.println("Enter file name: ");
-            fileName = writeNewFile.next();
+            fileName = writeNewFile.next() + ".txt";
         }
         else if(startNewGame.equals("no")){
             newSave = false;
@@ -133,7 +133,6 @@ public class CookieClicker {
         Boolean changeNameOfBakery = true;
         Boolean clickTinyCookie = true;
         Boolean doResizeBrowser = true;
-        Boolean resetBrowser = false;
         Boolean sellGrandma = true;
 
         
@@ -141,7 +140,8 @@ public class CookieClicker {
         if(loadGame){
         //Import File and load save
         System.out.println("Enter the file name you want to load: ");
-        fileName = loadFile.next();   
+        fileName = loadFile.next() + ".txt";   
+
 
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         String line = null;
@@ -166,6 +166,7 @@ public class CookieClicker {
         importText.sendKeys(codeImport);
         importLoadButton.click();
         menu.click();
+        saveGame = new File(fileName);
         }
         // Checks upgrades from save and set the amount for each upgrade
         WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
@@ -349,8 +350,10 @@ public class CookieClicker {
                 try{
                     FileUtils.write(saveGame, code);
                 }catch(IOException e){
-                    e.printStackTrace();
+                  String skipError = e.getMessage();
+                  System.out.println("There was an error saving...");
                 }
+                System.out.println(saveGame);
                 allDone.click();
                 countSave = 0;
                 menu.click();
@@ -384,9 +387,8 @@ public class CookieClicker {
                     System.out.println("Resizing browser....");
                     firefox.manage().window().setSize(new Dimension(1024,260));
                     doResizeBrowser = false;
-                    resetBrowser = true;
                 }
-                if(resetBrowser){
+                else{
                     System.out.println("Resetting browser size....");
                     firefox.manage().window().setSize(new Dimension(1024,768));
                     doResizeBrowser = false;
@@ -395,10 +397,8 @@ public class CookieClicker {
                 stats.click();
             }
 
-           
            checkAchievements++;
             countSave++;
-
 
         }
     }
