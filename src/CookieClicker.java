@@ -11,13 +11,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import org.openqa.selenium.NoSuchElementException;
-<<<<<<< HEAD
-=======
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import java.util.Scanner;
->>>>>>> Save-Game
 
 
 /**
@@ -135,16 +132,6 @@ public class CookieClicker {
         Boolean isPresent = true;
         Boolean changeNameOfBakery = true;
         Boolean clickTinyCookie = true;
-<<<<<<< HEAD
-        
-
-        //File varibale
-        File saveGame = new File("CookieClickerSave.txt");
-
-        
-        //Import File and load save
-        BufferedReader reader = new BufferedReader(new FileReader(saveGame));
-=======
         Boolean doResizeBrowser = true;
         Boolean resetBrowser = false;
         Boolean sellGrandma = true;
@@ -157,7 +144,6 @@ public class CookieClicker {
         fileName = loadFile.next();   
 
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
->>>>>>> Save-Game
         String line = null;
        
         try{
@@ -180,10 +166,7 @@ public class CookieClicker {
         importText.sendKeys(codeImport);
         importLoadButton.click();
         menu.click();
-<<<<<<< HEAD
-=======
         }
->>>>>>> Save-Game
         // Checks upgrades from save and set the amount for each upgrade
         WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
                                         mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
@@ -208,22 +191,14 @@ public class CookieClicker {
     System.out.println("Checking previously unlocked achievements....");
     stats.click();
     WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
-<<<<<<< HEAD
-=======
     WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
     WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
     WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
 
->>>>>>> Save-Game
 
     if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
           changeNameOfBakery = false;
     }
-<<<<<<< HEAD
-   
-    stats.click();
-
-=======
 
     if(achievementTinyCookie.getAttribute("class").equals("crate achievement enabled")){
         clickTinyCookie = false;
@@ -239,7 +214,6 @@ public class CookieClicker {
         sellGrandma = false;
     }
    
->>>>>>> Save-Game
     if(changeNameOfBakery){
             System.out.println("Re-naming Bakery for achievement");
             nameOfBakery.click();
@@ -249,8 +223,6 @@ public class CookieClicker {
             allDone.click();
     }
 
-<<<<<<< HEAD
-=======
     if(clickTinyCookie){
         System.out.println("Printing tiny cookie");
         WebElement tinyCookie = firefox.findElement(By.className(addresses.cookieTiny));
@@ -259,7 +231,6 @@ public class CookieClicker {
 
     stats.click();
 
->>>>>>> Save-Game
         //Start Cookie Click
         while(start){
 
@@ -336,8 +307,6 @@ public class CookieClicker {
                 System.out.println("Buying prism upgrade.....");
                 prismUpgrade.click();
                 upgradesBought[10]++;
-<<<<<<< HEAD
-=======
             }
 
             totalUpgradesBought = upgradesBought[0] + upgradesBought[1]+ upgradesBought[2] + upgradesBought[3]+ upgradesBought[4]
@@ -357,30 +326,7 @@ public class CookieClicker {
                 round3 = 20;
                 round = 50;
                 round2 = 35;
->>>>>>> Save-Game
             }
-
-            totalUpgradesBought = upgradesBought[0] + upgradesBought[1]+ upgradesBought[2] + upgradesBought[3]+ upgradesBought[4]
-                                    + upgradesBought[5] + upgradesBought[6] + upgradesBought[7] + upgradesBought[8]
-                                    + upgradesBought[9];
-                    
-            switch(totalUpgradesBought){
-                case 80:
-                round = 20;
-                    break;
-                case 180:
-                round2 = 20;
-                    break;
-                case 220:
-                round3 = 20;
-                round = 50;
-                round2 = 35;
-                    break;
-                default:
-                    break;   
-            }
-
-            
 
             if(isPresent = firefox.findElements(By.xpath
                     ("//div[@id='upgrades']/div[contains(@class, 'enabled')]")).size() > 0) {
@@ -391,11 +337,7 @@ public class CookieClicker {
             }
 
             // Save Game
-<<<<<<< HEAD
-            if(countSave == 500){
-=======
             if(countSave == 530){
->>>>>>> Save-Game
                 menu.click();
                 WebElement saveExport = firefox.findElement(By.xpath(addresses.exportButton));
                 WebElement importSave = firefox.findElement(By.xpath(addresses.importButton));
@@ -415,15 +357,7 @@ public class CookieClicker {
             }
             
             // Achievements
-<<<<<<< HEAD
-            if(checkAchievements == 200){
-                System.out.println("Checking achievements.....");
-                stats.click();
-                WebElement achievementCount = firefox.findElement(By.xpath(addresses.achievementsUnlocked));
-                System.out.println(achievementCount.getText());
-=======
             if(checkAchievements == 250){
->>>>>>> Save-Game
                 try{
                 WebElement close = firefox.findElement(By.xpath(addresses.achievementClose));
                 if(close.getAttribute("class").equals("close")){
@@ -434,8 +368,6 @@ public class CookieClicker {
                 System.out.println("There's no achievements to close....");
             }
 
-<<<<<<< HEAD
-=======
                 if(sellGrandma){
                     if(upgradesBought[1] > 1){
                     WebElement grandmaSell = firefox.findElement(By.xpath(addresses.sellOneGrandma));
@@ -459,7 +391,6 @@ public class CookieClicker {
                     firefox.manage().window().setSize(new Dimension(1024,768));
                     doResizeBrowser = false;
                 }
->>>>>>> Save-Game
                 checkAchievements = 1;
                 stats.click();
             }
@@ -467,10 +398,7 @@ public class CookieClicker {
            
            checkAchievements++;
             countSave++;
-<<<<<<< HEAD
-=======
 
->>>>>>> Save-Game
 
         }
     }

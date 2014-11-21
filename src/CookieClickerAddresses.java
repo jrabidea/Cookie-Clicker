@@ -40,10 +40,7 @@ public class CookieClickerAddresses {
     String productNineOwned = "productOwned8";
     String productTenOwned = "productOwned9";
     String productElevenOwned = "productOwned10";
-<<<<<<< HEAD
-=======
     String sellOneGrandma = "//*[@id='buttonSell-1']";
->>>>>>> Save-Game
 
 
     //Menu;
@@ -54,21 +51,11 @@ public class CookieClickerAddresses {
     String allDoneButton = "promptOption0";
     String loadButton = "/html/body/div/div[2]/div[8]/div/div[1]/div[3]/a[1]";
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Save-Game
     //Achievements
     String closeNotification = "framed close sidenote";
     String changeBakeryNameAchievement = "//div[@id='menu']/div[5]/div[4]/div[127]";
     String achievementClose = "//div[contains(@class, 'note')]/div[contains(@class, close')]";
-<<<<<<< HEAD
-    
-
-    //Stats
-    String achievementsUnlocked = "//div[@id='menu']/div[5]/div[2]/b";
-    String statsButton = "statsButton";
-=======
     String tinyCookieAchievement = "//div[@id='menu']/div[5]/div[4]/div[126]";
     String cookieDunkerAchievement = "//div[@id='menu']/div[5]/div[4]/div[125]";
     String sellGrandmaAchievement = "//div[@id='menu']/div[5]/div[4]/div[42]";
@@ -77,6 +64,5 @@ public class CookieClickerAddresses {
     //Stats
     String statsButton = "statsButton";
     String cookieTiny = "tinyCookie";
->>>>>>> Save-Game
 
 }
