@@ -1,4 +1,4 @@
-
+2
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
@@ -378,7 +378,8 @@ public class CookieClicker {
                                 .moveToElement(grandmaUpgrade)
                                 .click(grandmaSell)
                                 .build();
-                    sellGrandmaUpgrade.perform();            
+                    sellGrandmaUpgrade.perform();  
+                    upgradesBought[1]--;          
                     sellGrandma = false;
                     }
                 }
