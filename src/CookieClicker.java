@@ -31,20 +31,20 @@ public class CookieClicker {
 
         Scanner writeNewFile = new Scanner(System.in);
         Scanner loadFile = new Scanner(System.in);
-        System.out.println("Do you want to start a new game?");
+        System.out.println("Do you want to start a new game 'y' or 'n'?");
         startNewGame = writeNewFile.next();
 
-        if(startNewGame.equals("yes")){
+        if(startNewGame.equals("y")){
            newSave = true;
             System.out.println("Enter file name: ");
             fileName = writeNewFile.next() + ".txt";
         }
-        else if(startNewGame.equals("no")){
+        else if(startNewGame.equals("n")){
             newSave = false;
             loadGame = true;
         }
         else{
-            System.out.println("Please enter 'yes' or 'no'");
+            System.out.println("Please enter 'y' or 'n'");
         }
 
         File saveGame = new File(fileName);
@@ -361,16 +361,6 @@ public class CookieClicker {
             
             // Achievements
             if(checkAchievements == 250){
-                try{
-                WebElement close = firefox.findElement(By.xpath(addresses.achievementClose));
-                if(close.getAttribute("class").equals("close")){
-                    close.click();
-                }
-            }catch (NoSuchElementException e){
-                error = e.getMessage();
-                System.out.println("There's no achievements to close....");
-            }
-
                 if(sellGrandma){
                     if(upgradesBought[1] > 1){
                     WebElement grandmaSell = firefox.findElement(By.xpath(addresses.sellOneGrandma));
@@ -400,6 +390,14 @@ public class CookieClicker {
                 checkAchievements = 1;
                 stats.click();
             }
+                try{
+                WebElement close = firefox.findElement(By.xpath(addresses.notesClose));
+                 close.click();
+                }catch(NoSuchElementException e){
+                    error = e.getMessage();
+                }
+            
+
 
            checkAchievements++;
             countSave++;

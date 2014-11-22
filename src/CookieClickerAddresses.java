@@ -53,9 +53,8 @@ public class CookieClickerAddresses {
 
 
     //Achievements
-    String closeNotification = "framed close sidenote";
+    String notesClose = "//div[@onclick='Game.CloseNotes();']";
     String changeBakeryNameAchievement = "//div[@id='menu']/div[5]/div[4]/div[127]";
-    String achievementClose = "//div[contains(@class, 'note')]/div[contains(@class, close')]";
     String tinyCookieAchievement = "//div[@id='menu']/div[5]/div[4]/div[126]";
     String cookieDunkerAchievement = "//div[@id='menu']/div[5]/div[4]/div[125]";
     String sellGrandmaAchievement = "//div[@id='menu']/div[5]/div[4]/div[42]";
