@@ -1,4 +1,3 @@
-2
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
@@ -134,6 +133,7 @@ public class CookieClicker {
         Boolean clickTinyCookie = true;
         Boolean doResizeBrowser = true;
         Boolean sellGrandma = true;
+        Boolean doDunkAchievement = true;
 
         
 
@@ -207,7 +207,7 @@ public class CookieClicker {
 
     if(achievementCookieDunker.getAttribute("class").equals("crate achievement enabled")){
         System.out.println("Cookie Dunker Achievement is unlocked");
-        doResizeBrowser = false;
+        doDunkAchievement = false;
     }
 
     if(achievementSellGrandma.getAttribute("class").equals("crate achievement enabled")){
@@ -384,15 +384,18 @@ public class CookieClicker {
                     }
                 }
 
-                if(doResizeBrowser){
+                if(doDunkAchievement){
+
+                    if(doResizeBrowser){
                     System.out.println("Resizing browser....");
                     firefox.manage().window().setSize(new Dimension(1024,260));
                     doResizeBrowser = false;
-                }
-                else{
+                     }
+                    else{
                     System.out.println("Resetting browser size....");
                     firefox.manage().window().setSize(new Dimension(1024,768));
-                    doResizeBrowser = false;
+                    doDunkAchievement = false;
+                    }   
                 }
                 checkAchievements = 1;
                 stats.click();
