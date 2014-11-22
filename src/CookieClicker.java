@@ -26,25 +26,37 @@ public class CookieClicker {
 
         String startNewGame = "";
         String fileName = "";
+        String error2 = "";
         Boolean newSave = null;
         Boolean loadGame = null;
+        Boolean load = true;
+        Boolean retry = true;
 
         Scanner writeNewFile = new Scanner(System.in);
         Scanner loadFile = new Scanner(System.in);
-        System.out.println("Do you want to start a new game 'y' or 'n'?");
-        startNewGame = writeNewFile.next();
 
-        if(startNewGame.equals("y")){
-           newSave = true;
-            System.out.println("Enter file name: ");
-            fileName = writeNewFile.next() + ".txt";
-        }
-        else if(startNewGame.equals("n")){
-            newSave = false;
-            loadGame = true;
-        }
-        else{
-            System.out.println("Please enter 'y' or 'n'");
+        while(retry){
+            retry = false;
+            System.out.println("Do you want to start a new game 'y' or 'n'?");
+            startNewGame = writeNewFile.next();
+            try{
+                if(startNewGame.equals("y")){
+                   newSave = true;
+                   load = false;
+                    System.out.println("Enter file name: ");
+                    fileName = writeNewFile.next() + ".txt";
+                }
+                else if(startNewGame.equals("n")){
+                    newSave = false;
+                    loadGame = true;
+                }
+                else{
+                    System.out.println("Please enter 'y' or 'n'");
+                    retry = true;
+                }
+                }catch(NullPointerException e){
+                    error2 = e.getMessage();
+                }
         }
 
         File saveGame = new File(fileName);
@@ -57,7 +69,7 @@ public class CookieClicker {
                 }
           loadGame = false;
         }
-
+    
         // Launch Firefox and go to cookie cutter site
         WebDriver firefox = addresses.driver;
 
@@ -135,26 +147,31 @@ public class CookieClicker {
         Boolean sellGrandma = true;
         Boolean doDunkAchievement = true;
 
+        while(load){
+            if(loadGame){
+            //Import File and load save
+            load = false;
+            System.out.println("Enter the file name you want to load: ");
+            fileName = loadFile.next() + ".txt";   
+
+            try{
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line = null;
+           
         
-
-        if(loadGame){
-        //Import File and load save
-        System.out.println("Enter the file name you want to load: ");
-        fileName = loadFile.next() + ".txt";   
-
-
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String line = null;
-       
-        try{
-        while((line = reader.readLine()) != null){
-            codeImport = line;
+            while((line = reader.readLine()) != null){
+                codeImport = line;
+                }
+            }catch(FileNotFoundException e){
+                error = e.getMessage();
+                System.out.println("File not found. Please try again");
+                load = true;
+            }catch(IOException a){
+               error = a.getMessage();
+             } 
             }
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }catch(IOException a){
-            a.printStackTrace();
-        }    
+        }
+
         System.out.println("Importing save.....");  
 
         menu.click();
@@ -167,7 +184,6 @@ public class CookieClicker {
         importLoadButton.click();
         menu.click();
         saveGame = new File(fileName);
-        }
         // Checks upgrades from save and set the amount for each upgrade
         WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
                                         mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
