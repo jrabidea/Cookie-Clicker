@@ -15,6 +15,7 @@ public class CookieClickerAddresses {
     String cookieCounterLocation = "cookies";
     String bakeryName = "bakeryName";
     String buttonRandom = "promptOption1";
+    String cookieGolden = "goldenCookie";
    
 
     //Products
@@ -50,6 +51,8 @@ public class CookieClickerAddresses {
     String textArea = "textareaPrompt";
     String allDoneButton = "promptOption0";
     String loadButton = "/html/body/div/div[2]/div[8]/div/div[1]/div[3]/a[1]";
+    String buttonReset = "Reset";
+    String buttonYes = "//*[@id='promptOption0']";
 
 
     //Achievements
@@ -63,5 +66,6 @@ public class CookieClickerAddresses {
     //Stats
     String statsButton = "statsButton";
     String cookieTiny = "tinyCookie";
+    String bakedCookies = "//div[@id='menu']/div[3]/div[3]/div";
 
 }

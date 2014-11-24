@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
@@ -29,8 +30,9 @@ public class CookieClicker {
         String error2 = "";
         Boolean newSave = null;
         Boolean loadGame = null;
-        Boolean load = true;
+        Boolean retryLoad = true;
         Boolean retry = true;
+        Boolean load = true;
 
         Scanner writeNewFile = new Scanner(System.in);
         Scanner loadFile = new Scanner(System.in);
@@ -42,6 +44,7 @@ public class CookieClicker {
             try{
                 if(startNewGame.equals("y")){
                    newSave = true;
+                   retryLoad = false;
                    load = false;
                     System.out.println("Enter file name: ");
                     fileName = writeNewFile.next() + ".txt";
@@ -107,6 +110,7 @@ public class CookieClicker {
         WebElement prismUpgradesOwned = firefox.findElement(By.id(addresses.productElevenOwned));
         WebElement stats = firefox.findElement(By.id(addresses.statsButton));
         WebElement nameOfBakery = firefox.findElement(By.id(addresses.bakeryName));
+        
 
       
         // String variables
@@ -117,6 +121,8 @@ public class CookieClicker {
         String cookieText = "";
         String loadGetOwnedTextCheck = "";
         String error = "";
+        String allTimeCookiesBaked = "";
+        String finalCookiesBaked = "";
 
         // Integer variables
         int cursorUpgradesBought = 0;
@@ -147,10 +153,10 @@ public class CookieClicker {
         Boolean sellGrandma = true;
         Boolean doDunkAchievement = true;
 
-        while(load){
+        while(retryLoad){
             if(loadGame){
             //Import File and load save
-            load = false;
+            retryLoad = false;
             System.out.println("Enter the file name you want to load: ");
             fileName = loadFile.next() + ".txt";   
 
@@ -165,97 +171,96 @@ public class CookieClicker {
             }catch(FileNotFoundException e){
                 error = e.getMessage();
                 System.out.println("File not found. Please try again");
-                load = true;
+                retryLoad = true;
             }catch(IOException a){
                error = a.getMessage();
              } 
             }
         }
 
-        System.out.println("Importing save.....");  
+                System.out.println("Importing save.....");  
 
-        menu.click();
+                menu.click();
 
-        WebElement importSaveButton = firefox.findElement(By.xpath(addresses.importButton));
-        importSaveButton.click();
-        WebElement importText = firefox.findElement(By.id(addresses.textArea));
-        WebElement importLoadButton = firefox.findElement(By.xpath(addresses.loadButton));
-        importText.sendKeys(codeImport);
-        importLoadButton.click();
-        menu.click();
-        saveGame = new File(fileName);
-        // Checks upgrades from save and set the amount for each upgrade
-        WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
-                                        mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
-                                        timeMachineUpgradesOwned, antiMatterUpgradesOwned, prismUpgradesOwned};
+                WebElement importSaveButton = firefox.findElement(By.xpath(addresses.importButton));
+                importSaveButton.click();
+                WebElement importText = firefox.findElement(By.id(addresses.textArea));
+                WebElement importLoadButton = firefox.findElement(By.xpath(addresses.loadButton));
+                importText.sendKeys(codeImport);
+                importLoadButton.click();
+                menu.click();
+                saveGame = new File(fileName);
+                // Checks upgrades from save and set the amount for each upgrade
+                WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
+                                                mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
+                                                timeMachineUpgradesOwned, antiMatterUpgradesOwned, prismUpgradesOwned};
 
-        int[] upgradesBought =  {cursorUpgradesBought, grandmaUpgradesBought, farmUpgradesBought, factoryUpgradesBought,
-                                    mineUpgradesBought, shipmentUpgradesBought, alchemyLabUpgradesBought, 
-                                    portalUpgradesBought, timeMachineUpgradesBought, 
-                                    antiMatterUpgradesBought, prismUpgradesBought};
+                int[] upgradesBought =  {cursorUpgradesBought, grandmaUpgradesBought, farmUpgradesBought, factoryUpgradesBought,
+                                            mineUpgradesBought, shipmentUpgradesBought, alchemyLabUpgradesBought, 
+                                            portalUpgradesBought, timeMachineUpgradesBought, 
+                                            antiMatterUpgradesBought, prismUpgradesBought};
 
-        for(int i = 0; i < upgradesOwned.length;i++){
-            loadGetOwnedTextCheck = upgradesOwned[i].getText();
-            if(loadGetOwnedTextCheck.equals("")){
-                System.out.println("Upgrade not purchased from previous save");
-                upgradesBought[i] = 0;
-            }
-            else{
-                upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
+                for(int i = 0; i < upgradesOwned.length;i++){
+                    loadGetOwnedTextCheck = upgradesOwned[i].getText();
+                    if(loadGetOwnedTextCheck.equals("")){
+                        System.out.println("Upgrade not purchased from previous save");
+                        upgradesBought[i] = 0;
+                    }
+                    else{
+                        upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
+                }
+            }   
+            //Checking previously save achievements
+            System.out.println("Checking previously unlocked achievements....");
+            stats.click();
+            WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
+            WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
+            WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
+            WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
+
+
+        if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The backery name change achievement is already unlocked");
+              changeNameOfBakery = false;
         }
-    }   
-    //Checking previously save achievements
-    System.out.println("Checking previously unlocked achievements....");
-    stats.click();
-    WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
-    WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
-    WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
-    WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
 
+        if(achievementTinyCookie.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The tiny cookie achievement is already unlocked");
+            clickTinyCookie = false;
+        }
 
-    if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
-          changeNameOfBakery = false;
-    }
+        if(achievementCookieDunker.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The cookie dunker Achievement is already unlocked");
+            doDunkAchievement = false;
+        }
 
-    if(achievementTinyCookie.getAttribute("class").equals("crate achievement enabled")){
-        clickTinyCookie = false;
-    }
-
-    if(achievementCookieDunker.getAttribute("class").equals("crate achievement enabled")){
-        System.out.println("Cookie Dunker Achievement is unlocked");
-        doDunkAchievement = false;
-    }
-
-    if(achievementSellGrandma.getAttribute("class").equals("crate achievement enabled")){
-        System.out.println("Sell grandma achievement already unlocked");
-        sellGrandma = false;
-    }
-   
-    if(changeNameOfBakery){
-            System.out.println("Re-naming Bakery for achievement");
+        if(achievementSellGrandma.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The sell grandma achievement is already unlocked");
+            sellGrandma = false;
+        }
+           
+         if(changeNameOfBakery){
+            System.out.println("Re-naming the bakery for achievement");
             nameOfBakery.click();
             WebElement randomButton = firefox.findElement(By.id(addresses.buttonRandom));
             WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
             randomButton.click();
             allDone.click();
-    }
+            }
 
-    if(clickTinyCookie){
-        System.out.println("Printing tiny cookie");
-        WebElement tinyCookie = firefox.findElement(By.className(addresses.cookieTiny));
-        tinyCookie.click();
-    }
+        if(clickTinyCookie){
+                System.out.println("Printing tiny cookie");
+                WebElement tinyCookie = firefox.findElement(By.className(addresses.cookieTiny));
+                tinyCookie.click();
+        }
 
-    stats.click();
+        stats.click();
 
         //Start Cookie Click
         while(start){
 
             cookie.click();
             cookieText = cookieCounter.getText();
-        
-            System.out.println(cookieText);
-
 
              // Upgrades
             if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[0] < round){
@@ -376,7 +381,10 @@ public class CookieClicker {
             }
             
             // Achievements
-            if(checkAchievements == 250){
+            if(checkAchievements == 25){
+
+                stats.click();
+
                 if(sellGrandma){
                     if(upgradesBought[1] > 1){
                     WebElement grandmaSell = firefox.findElement(By.xpath(addresses.sellOneGrandma));
@@ -403,17 +411,42 @@ public class CookieClicker {
                     doDunkAchievement = false;
                     }   
                 }
+
+                WebElement cookiesBaked = firefox.findElement(By.xpath(addresses.bakedCookies));
+                allTimeCookiesBaked = cookiesBaked.getText();
+                String[] splitCookiesBaked = allTimeCookiesBaked.split(" ");
+
+                if(splitCookiesBaked[1].equals("octillion")){
+                    System.out.println("Resetting the game...");
+                    menu.click();
+                    WebElement resetButton = firefox.findElement(By.linkText(addresses.buttonReset));
+                    resetButton.click();
+                    WebElement yesButton = firefox.findElement(By.xpath(addresses.buttonYes));
+                    yesButton.click();
+                    menu.click();
+                    stats.click();
+                    System.out.println("Resetting the amount of upgrades bought...");
+                        for(int i = 0; i < upgradesOwned.length; i++){
+                            upgradesBought[i] = 0;
+                        }
+                }
+
                 checkAchievements = 1;
                 stats.click();
             }
-                try{
-                WebElement close = firefox.findElement(By.xpath(addresses.notesClose));
-                 close.click();
-                }catch(NoSuchElementException e){
-                    error = e.getMessage();
-                }
-            
-
+            try{
+            WebElement close = firefox.findElement(By.xpath(addresses.notesClose));
+             close.click();
+            }catch(NoSuchElementException e){
+                error = e.getMessage();
+            }
+            try{
+            WebElement goldenCookie = firefox.findElement(By.xpath(addresses.cookieGolden));
+            goldenCookie.click();
+            System.out.println("golden cookie was clicked!");
+            }catch(NoSuchElementException t){
+                error = t.getMessage();
+            }
 
            checkAchievements++;
             countSave++;
