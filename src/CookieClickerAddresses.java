@@ -57,10 +57,10 @@ public class CookieClickerAddresses {
 
     //Achievements
     String notesClose = "//div[@onclick='Game.CloseNotes();']";
-    String changeBakeryNameAchievement = "//div[@id='menu']/div[5]/div[4]/div[127]";
-    String tinyCookieAchievement = "//div[@id='menu']/div[5]/div[4]/div[126]";
-    String cookieDunkerAchievement = "//div[@id='menu']/div[5]/div[4]/div[125]";
-    String sellGrandmaAchievement = "//div[@id='menu']/div[5]/div[4]/div[42]";
+    String changeBakeryNameAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][127]";
+    String tinyCookieAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][126]";
+        String cookieDunkerAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][128]";
+    String sellGrandmaAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][42]";
     
 
     //Stats

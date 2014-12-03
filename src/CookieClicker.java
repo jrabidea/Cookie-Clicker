@@ -214,6 +214,7 @@ public class CookieClicker {
             System.out.println("Checking previously unlocked achievements....");
             stats.click();
             WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
+
             WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
             WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
             WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
@@ -381,7 +382,7 @@ public class CookieClicker {
             }
             
             // Achievements
-            if(checkAchievements == 25){
+            if(checkAchievements == 250){
 
                 stats.click();
 
