@@ -15,6 +15,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import java.util.Scanner;
+import org.openqa.selenium.ElementNotVisibleException;
 
 
 /**
@@ -340,12 +341,12 @@ public class CookieClicker {
                 round = 20;
             }
 
-            if(totalUpgradesBought > 81 && totalUpgradesBought < 220){
+            if(totalUpgradesBought > 81 && totalUpgradesBought < 210){
                 round = 20;
                 round2 = 20;
             }
 
-            if(totalUpgradesBought > 221){
+            if(totalUpgradesBought >= 210){
                 round3 = 20;
                 round = 50;
                 round2 = 35;
@@ -356,8 +357,15 @@ public class CookieClicker {
                 WebElement storeUpgrade = firefox.findElement
                         (By.xpath("//div[@id='upgrades']/div[contains(@class, 'enabled')]"));
                 storeUpgrade.click();
+                try{
+                WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+                allDone.click();
+                }catch(ElementNotVisibleException s){
+                    String message = s.getMessage();
+                }
                 System.out.println("store upgrade bought...");
             }
+
 
             // Save Game
             if(countSave == 530){
