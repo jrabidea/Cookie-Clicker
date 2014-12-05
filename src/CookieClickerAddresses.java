@@ -16,6 +16,7 @@ public class CookieClickerAddresses {
     String bakeryName = "bakeryName";
     String buttonRandom = "promptOption1";
     String cookieGolden = "goldenCookie";
+    String leftPane = "backgroundLeftCanvas";
    
 
     //Products
@@ -59,8 +60,11 @@ public class CookieClickerAddresses {
     String notesClose = "//div[@onclick='Game.CloseNotes();']";
     String changeBakeryNameAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][127]";
     String tinyCookieAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][126]";
-        String cookieDunkerAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][128]";
+    String cookieDunkerAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][128]";
     String sellGrandmaAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][42]";
+
+    //Upgrades
+    String oneMindUpgrade = "//div[@id='menu']//div[contains(@class, 'upgrade')][47]";
     
 
     //Stats

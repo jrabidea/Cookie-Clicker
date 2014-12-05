@@ -16,7 +16,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import java.util.Scanner;
 import org.openqa.selenium.ElementNotVisibleException;
-
+import org.openqa.selenium.*;
 
 /**
  * Created by jrAb on 10/24/14.
@@ -111,6 +111,7 @@ public class CookieClicker {
         WebElement prismUpgradesOwned = firefox.findElement(By.id(addresses.productElevenOwned));
         WebElement stats = firefox.findElement(By.id(addresses.statsButton));
         WebElement nameOfBakery = firefox.findElement(By.id(addresses.bakeryName));
+        WebElement leftCanvas = firefox.findElement(By.id(addresses.leftPane));
         
 
       
@@ -143,6 +144,9 @@ public class CookieClicker {
         int round2 = 10;
         int round3 = 10;
         int totalUpgradesBought = 0;
+        int[] coordinatesArrayX = {26, 31, 74, 83, 144, 229, 270 ,273, 224, 194};
+        int[] coordinatesArrayY = {219, 300, 350, 143, 123, 154, 205, 300, 354, 382}; 
+        int checkWrinklersCount = 0;
         
 
        // Boolean variables
@@ -153,6 +157,7 @@ public class CookieClicker {
         Boolean doResizeBrowser = true;
         Boolean sellGrandma = true;
         Boolean doDunkAchievement = true;
+        Boolean checkWrinklers = true;
 
         while(retryLoad){
             if(loadGame){
@@ -210,12 +215,15 @@ public class CookieClicker {
                     else{
                         upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
                 }
-            }   
+            }  
+
+            System.out.println("Resizing browser....");
+            firefox.manage().window().setSize(new Dimension(1024,768)); 
+
             //Checking previously save achievements
             System.out.println("Checking previously unlocked achievements....");
             stats.click();
             WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
-
             WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
             WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
             WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
@@ -456,9 +464,40 @@ public class CookieClicker {
             }catch(NoSuchElementException t){
                 error = t.getMessage();
             }
+            
+            if(checkWrinklersCount == 1000){
+                while(checkWrinklers){
+                    try{
+                        stats.click();
+                        WebElement oneMind = firefox.findElement(By.xpath(addresses.oneMindUpgrade));
+                        if(oneMind.getAttribute("class").equals("crate upgrade enabled")){
+                            for(int i = 0; i < coordinatesArrayX.length; i++){
+                                System.out.println("Clicking wrinklers...");
+                                Action wrinklerClick = builder
+                                    .moveToElement(leftCanvas, coordinatesArrayX[i], coordinatesArrayY[i])
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .build();
 
-           checkAchievements++;
+                                wrinklerClick.perform();
+                            }        
+                        }
+                    }catch(NoSuchElementException s){
+                        String message = s.getMessage();
+                    }
+                    stats.click();
+                    checkWrinklers = false;
+                    checkWrinklersCount = 0;
+                }
+            }
+            
+            checkWrinklers = true;
+            checkAchievements++;
             countSave++;
+            checkWrinklersCount++;
 
         }
     }
