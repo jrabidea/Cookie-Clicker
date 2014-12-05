@@ -354,10 +354,16 @@ public class CookieClicker {
                 round2 = 20;
             }
 
-            if(totalUpgradesBought >= 210){
+            if(totalUpgradesBought > 210 && totalUpgradesBought < 490){
                 round3 = 20;
                 round = 50;
                 round2 = 35;
+            }
+
+            if(totalUpgradesBought >= 490){
+                round3 = 50;
+                round = 100;
+                round2 = 70;
             }
 
             if(isPresent = firefox.findElements(By.xpath
@@ -458,7 +464,7 @@ public class CookieClicker {
                 error = e.getMessage();
             }
             try{
-            WebElement goldenCookie = firefox.findElement(By.xpath(addresses.cookieGolden));
+            WebElement goldenCookie = firefox.findElement(By.id(addresses.cookieGolden));
             goldenCookie.click();
             System.out.println("golden cookie was clicked!");
             }catch(NoSuchElementException t){
