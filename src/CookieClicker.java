@@ -1,4 +1,3 @@
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
@@ -11,11 +10,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import java.util.Scanner;
-
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.*;
 
 /**
  * Created by jrAb on 10/24/14.
@@ -27,25 +28,40 @@ public class CookieClicker {
 
         String startNewGame = "";
         String fileName = "";
+        String error2 = "";
         Boolean newSave = null;
         Boolean loadGame = null;
+        Boolean retryLoad = true;
+        Boolean retry = true;
+        Boolean load = true;
+        Boolean turnOffGraphics = false;
 
         Scanner writeNewFile = new Scanner(System.in);
         Scanner loadFile = new Scanner(System.in);
-        System.out.println("Do you want to start a new game?");
-        startNewGame = writeNewFile.next();
 
-        if(startNewGame.equals("yes")){
-           newSave = true;
-            System.out.println("Enter file name: ");
-            fileName = writeNewFile.next() + ".txt";
-        }
-        else if(startNewGame.equals("no")){
-            newSave = false;
-            loadGame = true;
-        }
-        else{
-            System.out.println("Please enter 'yes' or 'no'");
+        while(retry){
+            retry = false;
+            System.out.println("Do you want to start a new game 'y' or 'n'?");
+            startNewGame = writeNewFile.next();
+            try{
+                if(startNewGame.equals("y")){
+                   newSave = true;
+                   retryLoad = false;
+                   load = false;
+                    System.out.println("Enter file name: ");
+                    fileName = writeNewFile.next() + ".txt";
+                }
+                else if(startNewGame.equals("n")){
+                    newSave = false;
+                    loadGame = true;
+                }
+                else{
+                    System.out.println("Please enter 'y' or 'n'");
+                    retry = true;
+                }
+                }catch(NullPointerException e){
+                    error2 = e.getMessage();
+                }
         }
 
         File saveGame = new File(fileName);
@@ -57,8 +73,9 @@ public class CookieClicker {
                     e.printStackTrace();
                 }
           loadGame = false;
+          turnOffGraphics = true;
         }
-
+    
         // Launch Firefox and go to cookie cutter site
         WebDriver firefox = addresses.driver;
 
@@ -66,6 +83,58 @@ public class CookieClicker {
 
         firefox.get(addresses.baseURL);
         System.out.println("Loading Cookie Clicker.......");
+
+        WebElement menu = firefox.findElement(By.xpath(addresses.menuButton));
+        String graphicButton = "";
+        String[] buttonText = {};
+
+        if(turnOffGraphics){
+
+                System.out.println("Turning off graphics...");
+                menu.click();
+
+                WebElement fancyButton = firefox.findElement(By.id(addresses.buttonFancy));
+                WebElement particleButton = firefox.findElement(By.id(addresses.buttonParticle));
+                WebElement milkButton = firefox.findElement(By.id(addresses.buttonMilk));
+                WebElement cursorButton = firefox.findElement(By.id(addresses.buttonCursors));
+
+                graphicButton = fancyButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[2].equals("ON")){    
+                    fancyButton.click();
+                }
+                else{
+                    System.out.println("Fancy graphics are turned off");
+                }
+                graphicButton = cursorButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    cursorButton.click();
+                }
+                else{
+                    System.out.println("Cursors are turned off");
+                }
+                graphicButton = particleButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    particleButton.click();
+                }
+                else{
+                    System.out.println("Particles are turned off");
+                }
+                graphicButton = milkButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    milkButton.click();
+                }
+                else{
+                    System.out.println("Milk is turned off");
+                }
+               
+                menu.click();
+                turnOffGraphics = false;
+  
+        }
 
 
         //Cookie elements
@@ -80,7 +149,6 @@ public class CookieClicker {
         WebElement alchemyLabUpgrade =firefox.findElement(By.id(addresses.productSeven));
         WebElement portalUpgrade = firefox.findElement(By.id(addresses.productEight));
         WebElement timeMachineUpgrade = firefox.findElement(By.id(addresses.productNine));
-        WebElement menu = firefox.findElement(By.xpath(addresses.menuButton));
         WebElement cursorUpgradesOwned = firefox.findElement(By.id(addresses.productOneOwned));
         WebElement grandmaUpgradesOwned = firefox.findElement(By.id(addresses.productTwoOwned));
         WebElement farmUpgradesOwned = firefox.findElement(By.id(addresses.productThreeOwned));
@@ -96,7 +164,7 @@ public class CookieClicker {
         WebElement prismUpgradesOwned = firefox.findElement(By.id(addresses.productElevenOwned));
         WebElement stats = firefox.findElement(By.id(addresses.statsButton));
         WebElement nameOfBakery = firefox.findElement(By.id(addresses.bakeryName));
-
+        WebElement leftCanvas = firefox.findElement(By.id(addresses.leftPane));
       
         // String variables
         String count;
@@ -106,6 +174,11 @@ public class CookieClicker {
         String cookieText = "";
         String loadGetOwnedTextCheck = "";
         String error = "";
+        String allTimeCookiesBaked = "";
+        String finalCookiesBaked = "";
+        String season = "";
+        String[] seasonSplit = {};
+        
 
         // Integer variables
         int cursorUpgradesBought = 0;
@@ -125,6 +198,10 @@ public class CookieClicker {
         int round2 = 10;
         int round3 = 10;
         int totalUpgradesBought = 0;
+        int[] coordinatesArrayX = {26, 31, 74, 83, 144, 229, 270 ,273, 224, 194};
+        int[] coordinatesArrayY = {219, 300, 350, 143, 123, 154, 205, 300, 354, 382}; 
+        int checkWrinklersCount = 0;
+        int checkFestiveObjects = 0;
         
 
        // Boolean variables
@@ -134,112 +211,181 @@ public class CookieClicker {
         Boolean clickTinyCookie = true;
         Boolean doResizeBrowser = true;
         Boolean sellGrandma = true;
+        Boolean doDunkAchievement = true;
+        Boolean checkWrinklers = true;
+        Boolean doChristmasEvents = false;
+        Boolean checkGraphics = true;
 
-        
+        while(retryLoad){
+            if(loadGame){
+                //Import File and load save
+                retryLoad = false;
+                System.out.println("Enter the file name you want to load: ");
+                fileName = loadFile.next() + ".txt";   
 
-        if(loadGame){
-        //Import File and load save
-        System.out.println("Enter the file name you want to load: ");
-        fileName = loadFile.next() + ".txt";   
+                try{
+                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                String line = null;
+               
+            
+                while((line = reader.readLine()) != null){
+                    codeImport = line;
+                    }
+                }catch(FileNotFoundException e){
+                    error = e.getMessage();
+                    System.out.println("File not found. Please try again");
+                    retryLoad = true;
+                }catch(IOException a){
+                   error = a.getMessage();
+                 } 
+
+                  System.out.println("Importing save.....");  
+
+                    menu.click();
+
+                    WebElement importSaveButton = firefox.findElement(By.xpath(addresses.importButton));
+                    importSaveButton.click();
+                    WebElement importText = firefox.findElement(By.id(addresses.textArea));
+                    WebElement importLoadButton = firefox.findElement(By.xpath(addresses.loadButton));
+                    importText.sendKeys(codeImport);
+                    importLoadButton.click();
+                    menu.click();
+                    saveGame = new File(fileName);
+                   
+                System.out.println("Turning off graphics...");
+                menu.click();
+
+                WebElement fancyButton = firefox.findElement(By.id(addresses.buttonFancy));
+                WebElement particleButton = firefox.findElement(By.id(addresses.buttonParticle));
+                WebElement milkButton = firefox.findElement(By.id(addresses.buttonMilk));
+                WebElement cursorButton = firefox.findElement(By.id(addresses.buttonCursors));
+
+                graphicButton = fancyButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[2].equals("ON")){    
+                    fancyButton.click();
+                }
+                else{
+                    System.out.println("Fancy graphics are turned off");
+                }
+                graphicButton = cursorButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    cursorButton.click();
+                }
+                else{
+                    System.out.println("Cursors are turned off");
+                }
+                graphicButton = particleButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    particleButton.click();
+                }
+                else{
+                    System.out.println("Particles are turned off");
+                }
+                graphicButton = milkButton.getText();
+                buttonText = graphicButton.split(" ");
+                if(buttonText[1].equals("ON")){
+                    milkButton.click();
+                }
+                else{
+                    System.out.println("Milk is turned off");
+                }
+               
+                menu.click();
+  
+            }
+        }
+  
+
+     // Checks upgrades from save and set the amount for each upgrade
+            WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
+                                            mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
+                                            timeMachineUpgradesOwned, antiMatterUpgradesOwned, prismUpgradesOwned};
+
+            int[] upgradesBought =  {cursorUpgradesBought, grandmaUpgradesBought, farmUpgradesBought, factoryUpgradesBought,
+                                        mineUpgradesBought, shipmentUpgradesBought, alchemyLabUpgradesBought, 
+                                        portalUpgradesBought, timeMachineUpgradesBought, 
+                                        antiMatterUpgradesBought, prismUpgradesBought};
+
+            for(int i = 0; i < upgradesOwned.length;i++){
+                loadGetOwnedTextCheck = upgradesOwned[i].getText();
+                if(loadGetOwnedTextCheck.equals("")){
+                    System.out.println("Upgrade not purchased from previous save");
+                    upgradesBought[i] = 0;
+                }
+                else{
+                    upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
+            }
+        }  
 
 
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String line = null;
-       
+             //Checking previously save achievements
+        System.out.println("Checking previously unlocked achievements....");
+        stats.click();
+        WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
+        WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
+        WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
+        WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
+
         try{
-        while((line = reader.readLine()) != null){
-            codeImport = line;
-            }
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }catch(IOException a){
-            a.printStackTrace();
-        }    
-        System.out.println("Importing save.....");  
-
-        menu.click();
-
-        WebElement importSaveButton = firefox.findElement(By.xpath(addresses.importButton));
-        importSaveButton.click();
-        WebElement importText = firefox.findElement(By.id(addresses.textArea));
-        WebElement importLoadButton = firefox.findElement(By.xpath(addresses.loadButton));
-        importText.sendKeys(codeImport);
-        importLoadButton.click();
-        menu.click();
-        saveGame = new File(fileName);
+        WebElement checkSeason = firefox.findElement(By.xpath(addresses.seasonCheck));
+        season = checkSeason.getText();
+        seasonSplit = season.split(" ");
+        }catch(ElementNotVisibleException a){
+            String message = a.getMessage();
         }
-        // Checks upgrades from save and set the amount for each upgrade
-        WebElement[] upgradesOwned = {cursorUpgradesOwned, grandmaUpgradesOwned, farmUpgradesOwned, factoryUpgradesOwned,
-                                        mineUpgradesOwned, shipmentUpgradesOwned, alchemyUpgradesOwned,portalUpgradesOwned,
-                                        timeMachineUpgradesOwned, antiMatterUpgradesOwned, prismUpgradesOwned};
 
-        int[] upgradesBought =  {cursorUpgradesBought, grandmaUpgradesBought, farmUpgradesBought, factoryUpgradesBought,
-                                    mineUpgradesBought, shipmentUpgradesBought, alchemyLabUpgradesBought, 
-                                    portalUpgradesBought, timeMachineUpgradesBought, 
-                                    antiMatterUpgradesBought, prismUpgradesBought};
-
-        for(int i = 0; i < upgradesOwned.length;i++){
-            loadGetOwnedTextCheck = upgradesOwned[i].getText();
-            if(loadGetOwnedTextCheck.equals("")){
-                System.out.println("Upgrade not purchased from previous save");
-                upgradesBought[i] = 0;
-            }
-            else{
-                upgradesBought[i] = Integer.parseInt(loadGetOwnedTextCheck);
+        if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The backery name change achievement is already unlocked");
+              changeNameOfBakery = false;
         }
-    }   
-    //Checking previously save achievements
-    System.out.println("Checking previously unlocked achievements....");
-    stats.click();
-    WebElement bakeryNameChange = firefox.findElement(By.xpath(addresses.changeBakeryNameAchievement));
-    WebElement achievementTinyCookie = firefox.findElement(By.xpath(addresses.tinyCookieAchievement));
-    WebElement achievementCookieDunker = firefox.findElement(By.xpath(addresses.cookieDunkerAchievement));
-    WebElement achievementSellGrandma = firefox.findElement(By.xpath(addresses.sellGrandmaAchievement));
 
+        if(achievementTinyCookie.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The tiny cookie achievement is already unlocked");
+            clickTinyCookie = false;
+        }
 
-    if(bakeryNameChange.getAttribute("class").equals("crate achievement enabled")){
-          changeNameOfBakery = false;
-    }
+        if(achievementCookieDunker.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The cookie dunker Achievement is already unlocked");
+            doDunkAchievement = false;
+        }
 
-    if(achievementTinyCookie.getAttribute("class").equals("crate achievement enabled")){
-        clickTinyCookie = false;
-    }
-
-    if(achievementCookieDunker.getAttribute("class").equals("crate achievement enabled")){
-        System.out.println("Cookie Dunker Achievement is unlocked");
-        doResizeBrowser = false;
-    }
-
-    if(achievementSellGrandma.getAttribute("class").equals("crate achievement enabled")){
-        System.out.println("Sell grandma achievement already unlocked");
-        sellGrandma = false;
-    }
-   
-    if(changeNameOfBakery){
-            System.out.println("Re-naming Bakery for achievement");
+        if(achievementSellGrandma.getAttribute("class").equals("crate achievement enabled")){
+            System.out.println("The sell grandma achievement is already unlocked");
+            sellGrandma = false;
+        }
+           
+        if(changeNameOfBakery){
+            System.out.println("Re-naming the bakery for achievement");
             nameOfBakery.click();
             WebElement randomButton = firefox.findElement(By.id(addresses.buttonRandom));
             WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
             randomButton.click();
             allDone.click();
-    }
+        }
 
-    if(clickTinyCookie){
-        System.out.println("Printing tiny cookie");
-        WebElement tinyCookie = firefox.findElement(By.className(addresses.cookieTiny));
-        tinyCookie.click();
-    }
+        if(clickTinyCookie){
+                System.out.println("Printing tiny cookie");
+                WebElement tinyCookie = firefox.findElement(By.className(addresses.cookieTiny));
+                tinyCookie.click();
+        }
 
-    stats.click();
+        if(seasonSplit[3].equals("Christmas")){
+            System.out.println("It's Christmas!!!!!!!!");
+            doChristmasEvents = true;
+        }
+
+        stats.click();
+
+
 
         //Start Cookie Click
         while(start){
 
             cookie.click();
             cookieText = cookieCounter.getText();
-        
-            System.out.println(cookieText);
-
 
              // Upgrades
             if(cursorUpgrade.getAttribute("class").equals("product unlocked enabled") && upgradesBought[0] < round){
@@ -318,15 +464,21 @@ public class CookieClicker {
                 round = 20;
             }
 
-            if(totalUpgradesBought > 81 && totalUpgradesBought < 220){
+            if(totalUpgradesBought > 81 && totalUpgradesBought < 210){
                 round = 20;
                 round2 = 20;
             }
 
-            if(totalUpgradesBought > 221){
+            if(totalUpgradesBought > 210 && totalUpgradesBought < 490){
                 round3 = 20;
                 round = 50;
                 round2 = 35;
+            }
+
+            if(totalUpgradesBought >= 490){
+                round3 = 50;
+                round = 100;
+                round2 = 70;
             }
 
             if(isPresent = firefox.findElements(By.xpath
@@ -334,8 +486,15 @@ public class CookieClicker {
                 WebElement storeUpgrade = firefox.findElement
                         (By.xpath("//div[@id='upgrades']/div[contains(@class, 'enabled')]"));
                 storeUpgrade.click();
+                try{
+                WebElement allDone = firefox.findElement(By.id(addresses.allDoneButton));
+                allDone.click();
+                }catch(ElementNotVisibleException s){
+                    String message = s.getMessage();
+                }
                 System.out.println("store upgrade bought...");
             }
+
 
             // Save Game
             if(countSave == 530){
@@ -361,15 +520,8 @@ public class CookieClicker {
             
             // Achievements
             if(checkAchievements == 250){
-                try{
-                WebElement close = firefox.findElement(By.xpath(addresses.achievementClose));
-                if(close.getAttribute("class").equals("close")){
-                    close.click();
-                }
-            }catch (NoSuchElementException e){
-                error = e.getMessage();
-                System.out.println("There's no achievements to close....");
-            }
+
+                stats.click();
 
                 if(sellGrandma){
                     if(upgradesBought[1] > 1){
@@ -378,27 +530,121 @@ public class CookieClicker {
                                 .moveToElement(grandmaUpgrade)
                                 .click(grandmaSell)
                                 .build();
-                    sellGrandmaUpgrade.perform();            
+                    sellGrandmaUpgrade.perform();  
+                    upgradesBought[1]--;          
                     sellGrandma = false;
                     }
                 }
 
-                if(doResizeBrowser){
+                if(doDunkAchievement){
+
+                    if(doResizeBrowser){
                     System.out.println("Resizing browser....");
                     firefox.manage().window().setSize(new Dimension(1024,260));
                     doResizeBrowser = false;
-                }
-                else{
+                     }
+                    else{
                     System.out.println("Resetting browser size....");
                     firefox.manage().window().setSize(new Dimension(1024,768));
-                    doResizeBrowser = false;
+                    doDunkAchievement = false;
+                    }   
                 }
+
+                WebElement cookiesBaked = firefox.findElement(By.xpath(addresses.bakedCookies));
+                allTimeCookiesBaked = cookiesBaked.getText();
+                String[] splitCookiesBaked = allTimeCookiesBaked.split(" ");
+
+                if(splitCookiesBaked[1].equals("octillion")){
+                    System.out.println("Resetting the game...");
+                    menu.click();
+                    WebElement resetButton = firefox.findElement(By.linkText(addresses.buttonReset));
+                    resetButton.click();
+                    WebElement yesButton = firefox.findElement(By.xpath(addresses.buttonYes));
+                    yesButton.click();
+                    menu.click();
+                    stats.click();
+                    System.out.println("Resetting the amount of upgrades bought...");
+                        for(int i = 0; i < upgradesOwned.length; i++){
+                            upgradesBought[i] = 0;
+                        }
+                }
+
                 checkAchievements = 1;
                 stats.click();
             }
+            try{
+            WebElement close = firefox.findElement(By.xpath(addresses.notesClose));
+             close.click();
+            }catch(NoSuchElementException e){
+                error = e.getMessage();
+            }
+            try{
+            WebElement goldenCookie = firefox.findElement(By.id(addresses.cookieGolden));
+            goldenCookie.click();
+            System.out.println("golden cookie was clicked!");
+            }catch(NoSuchElementException t){
+                error = t.getMessage();
+            }catch(ElementNotVisibleException s){
+                error = s.getMessage();
+            }
+            
+            if(checkWrinklersCount == 1000){
+                while(checkWrinklers){
+                    try{
+                        stats.click();
+                        WebElement oneMind = firefox.findElement(By.xpath(addresses.oneMindUpgrade));
+                        if(oneMind.getAttribute("class").equals("crate upgrade enabled")){
+                            for(int i = 0; i < coordinatesArrayX.length; i++){
+                                System.out.println("Clicking wrinklers...");
+                                Action wrinklerClick = builder
+                                    .moveToElement(leftCanvas, coordinatesArrayX[i], coordinatesArrayY[i])
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .click()
+                                    .build();
 
-           checkAchievements++;
+                                wrinklerClick.perform();
+                            }        
+                        }
+                    }catch(NoSuchElementException s){
+                        String message = s.getMessage();
+                    }
+                    stats.click();
+                    checkWrinklers = false;
+                    checkWrinklersCount = 0;
+                }
+            }
+
+            if(checkFestiveObjects == 200){
+
+                if(doChristmasEvents){
+
+                    Action festiveObjects = builder
+                        .moveToElement(leftCanvas, 50, 575)
+                        .click()
+                        .build();
+
+                    festiveObjects.perform();   
+                }
+            }
+
+             try{
+                WebElement reindeer = firefox.findElement(By.id(addresses.reindeerPopup));
+                reindeer.click();
+                System.out.println("The reindeer was clicked!");
+                }catch(NoSuchElementException e){
+                    String message = e.getMessage();
+                }catch(ElementNotVisibleException a){
+                    String message = a.getMessage();
+                }     
+        
+            checkWrinklers = true;
+            checkAchievements++;
             countSave++;
+            checkWrinklersCount++;
+            checkFestiveObjects++;
 
         }
     }

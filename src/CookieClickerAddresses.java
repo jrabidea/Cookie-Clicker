@@ -15,6 +15,9 @@ public class CookieClickerAddresses {
     String cookieCounterLocation = "cookies";
     String bakeryName = "bakeryName";
     String buttonRandom = "promptOption1";
+    String cookieGolden = "goldenCookie";
+    String leftPane = "backgroundLeftCanvas";
+    String reindeerPopup = "seasonPopup";
    
 
     //Products
@@ -50,19 +53,28 @@ public class CookieClickerAddresses {
     String textArea = "textareaPrompt";
     String allDoneButton = "promptOption0";
     String loadButton = "/html/body/div/div[2]/div[8]/div/div[1]/div[3]/a[1]";
+    String buttonReset = "Reset";
+    String buttonYes = "//*[@id='promptOption0']";
+    String buttonFancy = "fancyButton";
+    String buttonParticle = "particlesButton";
+    String buttonMilk = "milkButton";
+    String buttonCursors = "cursorsButton";
 
 
     //Achievements
-    String closeNotification = "framed close sidenote";
-    String changeBakeryNameAchievement = "//div[@id='menu']/div[5]/div[4]/div[127]";
-    String achievementClose = "//div[contains(@class, 'note')]/div[contains(@class, close')]";
-    String tinyCookieAchievement = "//div[@id='menu']/div[5]/div[4]/div[126]";
-    String cookieDunkerAchievement = "//div[@id='menu']/div[5]/div[4]/div[125]";
-    String sellGrandmaAchievement = "//div[@id='menu']/div[5]/div[4]/div[42]";
+    String notesClose = "//div[@onclick='Game.CloseNotes();']";
+    String changeBakeryNameAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][127]";
+    String tinyCookieAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][126]";
+    String cookieDunkerAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][125]";
+    String sellGrandmaAchievement = "//div[@id='menu']//div[contains(@class, 'achievement')][42]";
+
+    //Upgrades
+    String oneMindUpgrade = "//div[@id='menu']//div[contains(@class, 'upgrade')][47]";
     
 
     //Stats
     String statsButton = "statsButton";
     String cookieTiny = "tinyCookie";
-
+    String bakedCookies = "//div[@id='menu']//div[contains(@class,'subsection')][1]//div[contains(@class,'listing')][2]//div[contains(@class,  'price plain')]";
+    String seasonCheck = "//div[@id='menu']/div[4]/div[2]";
 }
