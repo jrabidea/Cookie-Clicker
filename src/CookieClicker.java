@@ -617,9 +617,9 @@ public class CookieClicker {
                 }
             }
 
-            if(checkFestiveObjects == 200){
+            if(doChristmasEvents){
 
-                if(doChristmasEvents){
+                if(checkFestiveObjects == 200){
 
                     Action festiveObjects = builder
                         .moveToElement(leftCanvas, 50, 575)
@@ -627,7 +627,9 @@ public class CookieClicker {
                         .build();
 
                     festiveObjects.perform();   
+                    checkFestiveObjects = 0;
                 }
+
             }
 
              try{
